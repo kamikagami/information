@@ -71,14 +71,10 @@
     }
 
     function vflag {
-      usrname=`awk -F: '{print $1}' /etc/passwd | head -1`
-      home=`awk -F: '{print $6}' /etc/passwd | head -1`
-      shell=`awk -F: '{print $7}' /etc/passwd | head -1`
-      path=`echo $PATH`
-      echo Username: $usrname
-      echo Home:     $home
-      echo Shell:    $shell
-      echo Path:     $path
+      printf 'Username: %-10s\n' $USER
+      printf 'Home:     %-10s\n'     $HOME
+      printf 'Shell:    %-10s\n'    $SHELL
+      printf 'Path:     %-10s\n'    $PATH
     }
 
     function aflag {
