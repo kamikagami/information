@@ -13,7 +13,7 @@
     dArgument=
 
 
-    while getopts kpuglvad: opt
+    while getopts kpuglva:d: opt
     do
         case "$opt" in
             k) 
@@ -29,7 +29,9 @@
             v) 
                 vFlag=1;;
             a) 
-                aFlag=1;;
+                aFlag=1
+		aArgument=$OPTARG	
+		;;
             d) 
                 dFlag=1
                 dArgument=$OPTARG
@@ -77,8 +79,8 @@
     }
 
     function vflag {
-      printf 'Username: %-10s\n' $USER
-      printf 'Home:     %-10s\n'     $HOME
+      printf 'Username: %-10s\n'    $USER
+      printf 'Home:     %-10s\n'    $HOME
       printf 'Shell:    %-10s\n'    $SHELL
       printf 'Path:     %-10s\n'    $PATH
     }
