@@ -40,50 +40,94 @@
         esac
     done
 
-    #kFlag
-    if [ -n "$kFlag" ]; then
-        uname -srv
-    fi
+    function kflag {
+      uname -srv
+    }
 
-    #pFlag
-    if [ -n "$pFlag" ]; then
-        ps -a | wc -l
-    fi
 
-    #uFlag
-    if [ -n "$uFlag" ]; then
-        awk -F: '{print "Username:" $1, "\nUserID:" $3, "\nGroupID:" $4, "\nHome:" $6, "\nShell:" $7."\n"}' /etc/passwd
-    fi
-    
-    #gFlag
-    if [ -n "$gFlag" ]; then
-       users=$(awk -F: '{ print $1}' /etc/passwd)
+    function pflag {
+      ps -a | wc -l
+    }
+
+    function uflag {
+      awk -F: '{print "Username:" $1, "\nUserID:" $3, "\nGroupID:" $4, "\nHome:" $6, "\nShell:" $7."\n"}' /etc/passwd
+    }
+
+    function gflag {
+      users=$(awk -F: '{ print $1}' /etc/passwd)
        for user in $users;do
          echo Username: $user
          echo Groups: `id $user -nG | awk '{n=split($0, a);for(i in a) if (i<n){ print a[i]","} else {print a[i]} }'`
          echo  
        done
+    }
+  
+    function lflag {
+      find $HOME -printf "%s %f\n"| sort -nr| head -10 
+    }
+
+    function dflag {
+        ls -a $dArgument | wc -l
+    }
+
+    function vflag {
+      usrname=`awk -F: '{print $1}' /etc/passwd | head -1`
+      home=`awk -F: '{print $6}' /etc/passwd | head -1`
+      shell=`awk -F: '{print $7}' /etc/passwd | head -1`
+      path=`echo $PATH`
+      echo Username: $usrname
+      echo Home:     $home
+      echo Shell:    $shell
+      echo Path:     $path
+    }
+
+    function aflag {
+      kflag
+      pflag
+      uflag
+      gflag
+      lflag
+      vflag
+      dflag
+    }
+
+
+    #kFlag
+    if [ -n "$kFlag" ]; then
+      kflag
+    fi
+
+    #pFlag
+    if [ -n "$pFlag" ]; then
+      pflag
+    fi
+
+    #uFlag
+    if [ -n "$uFlag" ]; then
+      uflag
+    fi
+    
+    #gFlag
+    if [ -n "$gFlag" ]; then
+      gflag       
     fi
 
     #lFlag
     if [ -n "$lFlag" ]; then
-        find $HOME -printf "%s %f\n"| sort -nr| head -10
+      lflag
     fi
 
     #dFlag
     if [ -n "$dFlag" ];then 
-        ls -a $dArgument | wc -l
+      dflag
     fi
 
     #vFlag
     if [ -n "$vFlag" ];then
-        usrname=`awk -F: '{print $1}' /etc/passwd | head -1`
-        home=`awk -F: '{print $6}' /etc/passwd | head -1`
-        shell=`awk -F: '{print $7}' /etc/passwd | head -1`
-        path=`echo $PATH`
-
-        echo Username: $usrname
-        echo Home:     $home
-        echo Shell:    $shell
-        echo Path:     $path
+      vflag
     fi
+
+    if [ -n "$aFlag" ];then
+      aflag
+    fi
+   
