@@ -1,5 +1,6 @@
 #!/bin/bash
 
+    #s3362938 Kaidun Huang
 
     #Flags
     kFlag=
@@ -9,6 +10,7 @@
     lFlag=
     vFlag=
     aFlag=
+    aArgument=
     dFlag=
     dArgument=
 
@@ -30,14 +32,14 @@
                 vFlag=1;;
             a) 
                 aFlag=1
-		aArgument=$OPTARG	
-		;;
+		            aArgument=$OPTARG	
+		            ;;
             d) 
                 dFlag=1
                 dArgument=$OPTARG
                 ;;
             \?)
-                echo "usage: $0 [-kpuglva] [-d directory]"
+                echo "usage: $0 [-kpuglv] [-ad directory]"
                 exit 1;;
         esac
     done
@@ -58,15 +60,15 @@
     function gflag {
       users=$(awk -F: '{ print $1}' /etc/passwd)
        for user in $users;do
-         echo Username: $user
-         echo Groups: `id $user -nG |
-	 awk '{n=split($0, a);
-		  for(i in a) 
-		      if (i<n)
-			{ print a[i]","} 
-	 	      else 
-		        {print a[i]} }'`
-         echo  
+          echo Username: $user
+          echo Groups: `id $user -nG 
+         | awk '{n=split($0, a);
+		          for(i in a) 
+		            if (i<n)
+			             {print a[i]","} 
+	 	            else 
+		               {print a[i]} }'`
+          echo  
        done
     }
   
